@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { Keyboard, Zap, Download, Settings, HelpCircle } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
+import { useDeviceStore } from '@/stores/device'
 
 const route = useRoute()
 const router = useRouter()
+const deviceStore = useDeviceStore()
 
-function disconnect() {
+async function disconnect() {
+  await deviceStore.disconnect()
   router.push('/')
 }
 
@@ -35,8 +38,10 @@ const bottomNavItems = [
           <Keyboard :size="20" />
         </div>
         <div>
-          <div class="text-sm font-medium text-text-heading">MacroPad v2</div>
-          <div class="text-xs text-text-muted">Connected: USB-C</div>
+          <div class="text-sm font-medium text-text-heading">{{ deviceStore.productName ?? 'Demo Pad' }}</div>
+          <div class="text-xs" :class="deviceStore.isConnected ? 'text-accent' : 'text-text-muted'">
+            {{ deviceStore.isConnected ? 'Connected' : 'Not connected' }}
+          </div>
         </div>
       </div>
     </div>
@@ -44,7 +49,7 @@ const bottomNavItems = [
     <!-- Connect button -->
     <div class="px-4 pt-3">
       <button
-        class="w-full rounded-lg bg-error py-3 text-sm font-medium text-bg transition-colors hover:bg-error-hover"
+        class="w-full rounded-lg border border-border py-3 text-sm font-medium text-text-muted transition-all duration-150 hover:border-error hover:bg-error hover:text-bg"
         @click="disconnect"
       >
         Disconnect Device
