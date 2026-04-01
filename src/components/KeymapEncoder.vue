@@ -42,7 +42,13 @@ const popupPad = computed(() => `${props.cellSize * POPUP_SCALE * 0.08}px`)
       "
       @click="emit('toggleExpand')"
     >
-      ENC
+      <!-- Collapsed: show assigned actions so user can see binds even when collapsed -->
+      <div v-if="!expanded" class="flex flex-col items-center leading-tight">
+        <span class="opacity-60">{{ ccwLabel }}</span>
+        <span>{{ swLabel }}</span>
+        <span class="opacity-60">{{ cwLabel }}</span>
+      </div>
+      <span v-else>ENC</span>
     </button>
 
     <!-- Expanded: 3 action keys floating above, each sized to 1 grid cell -->
