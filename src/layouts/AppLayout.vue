@@ -5,7 +5,7 @@ import AppSidebar from '@/components/AppSidebar.vue'
 <template>
   <div class="flex h-screen bg-bg text-text">
     <AppSidebar />
-    <main class="flex-1 overflow-auto p-8">
+    <main class="scrollbar-thin flex-1 overflow-auto p-8">
       <router-view />
     </main>
   </div>

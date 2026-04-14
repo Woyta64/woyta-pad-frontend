@@ -68,7 +68,7 @@ const activeKeys = computed((): Keycode[] => {
     </div>
 
     <!-- Keys grid -->
-    <div class="grid min-h-0 flex-1 content-start gap-2 overflow-y-auto" style="grid-template-columns: repeat(auto-fill, 3.5rem)">
+    <div class="scrollbar-thin grid min-h-0 flex-1 content-start gap-2 overflow-y-auto" style="grid-template-columns: repeat(auto-fill, 3.5rem)">
       <button
         v-for="kc in activeKeys"
         :key="kc.code"

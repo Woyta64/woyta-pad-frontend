@@ -19,6 +19,24 @@
   --app-warning-muted: #604200;
 }
 
+.no-spinners::-webkit-outer-spin-button,
+.no-spinners::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.no-spinners {
+  -moz-appearance: textfield;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--app-border) transparent;
+}
+
+.scrollbar-thin:hover {
+  scrollbar-color: var(--app-text-muted) transparent;
+}
+
 @theme inline {
   --color-bg: var(--app-bg);
   --color-surface: var(--app-surface);
