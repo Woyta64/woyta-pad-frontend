@@ -8,6 +8,11 @@
   </head>
   <body>
     <div id="app"></div>
+    <script>
+      if (localStorage.getItem('woyta-pad-theme') === 'light') {
+        document.documentElement.classList.add('light')
+      }
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

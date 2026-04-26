@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { Search, X } from 'lucide-vue-next'
-import { KEYCODE_CATEGORIES, type Keycode } from '@/keycodes'
+import { KEYCODE_CATEGORIES, keycodeLabel, type Keycode } from '@/keycodes'
 
 const emit = defineEmits<{
   assign: [keycode: number]
@@ -13,7 +13,9 @@ const search = ref('')
 const visibleCategories = computed(() => {
   if (!search.value) return KEYCODE_CATEGORIES
   const q = search.value.toLowerCase()
-  return KEYCODE_CATEGORIES.filter((c) => c.keys.some((k) => k.label.toLowerCase().includes(q)))
+  return KEYCODE_CATEGORIES.filter((c) =>
+    c.keys.some((k) => keycodeLabel(k.code).toLowerCase().includes(q)),
+  )
 })
 
 // When a search query hides the currently active tab (no keys match),
@@ -29,7 +31,7 @@ const activeKeys = computed((): Keycode[] => {
   if (!category) return []
   if (!search.value) return category.keys
   const q = search.value.toLowerCase()
-  return category.keys.filter((k) => k.label.toLowerCase().includes(q))
+  return category.keys.filter((k) => keycodeLabel(k.code).toLowerCase().includes(q))
 })
 </script>
 
@@ -76,7 +78,7 @@ const activeKeys = computed((): Keycode[] => {
         :title="`0x${kc.code.toString(16).padStart(2, '0').toUpperCase()}`"
         @click="emit('assign', kc.code)"
       >
-        {{ kc.label }}
+        {{ keycodeLabel(kc.code) }}
       </button>
     </div>
   </div>

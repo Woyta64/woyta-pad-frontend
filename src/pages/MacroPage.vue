@@ -4,19 +4,23 @@ import {
   Trash2, Plus, Save, Copy,
   ChevronDown, ChevronUp,
   X, Timer, Keyboard, Type,
-  ArrowDownToLine, ArrowUpFromLine,
-  Clock, Ellipsis, Check,
+  ArrowDownToLine, ArrowUpFromLine, ArrowDownUp,
+  Clock, Ellipsis, Check, Loader2, Download,
 } from 'lucide-vue-next'
 import KeyPalette from '@/components/KeyPalette.vue'
 import { keycodeLabel } from '@/keycodes'
+import { useDeviceStore } from '@/stores/device'
+import { encodeMacro, decodeMacro } from '@/macroCodec'
+import { getSelectedLayout } from '@/keyboardLayouts'
 
 // --- Types ---
 
 type MacroType = 'sequence' | 'shortcut' | 'string'
+type SequenceActionType = 'tap' | 'keydown' | 'keyup' | 'delay'
 
 interface SequenceAction {
   id: number
-  type: 'keydown' | 'keyup' | 'delay'
+  type: SequenceActionType
   keycode?: number
   label?: string
   delayMs?: number
@@ -47,6 +51,9 @@ interface MacroTypeOption {
 
 const MACRO_SLOT_COUNT = 128
 const MAX_DELAY_MS = 60000
+const MAX_SEQUENCE_ACTIONS = 84
+const MAX_SHORTCUT_KEYS = 6
+const MAX_STRING_CHARACTERS = 84
 const MACRO_TITLES_STORAGE_KEY = 'woyta-pad-macro-titles'
 
 const macroTypeOptions: MacroTypeOption[] = [
@@ -67,11 +74,16 @@ const macroTypeOptions: MacroTypeOption[] = [
   },
 ]
 
+const deviceStore = useDeviceStore()
+
 // --- State ---
 
 let nextId = 0
 
 const selectedSlotIndex = ref(0)
+const macroLoading = ref(false)
+const macroSaving = ref(false)
+const loadedSlotIndices = new Set<number>()
 const addActionMenuOpen = ref(false)
 const actionContextMenuId = ref<number | null>(null)
 const selectedSequenceActionId = ref<number | null>(null)
@@ -101,6 +113,16 @@ const allActionsSelected = computed(() =>
   selectedMacro.value.sequenceActions.length > 0 &&
   selectedMacro.value.sequenceActions.every((action) => action.selected),
 )
+
+const sequenceAtLimit = computed(() =>
+  selectedMacro.value.sequenceActions.length >= MAX_SEQUENCE_ACTIONS,
+)
+
+const shortcutAtLimit = computed(() =>
+  selectedMacro.value.shortcutKeys.length >= MAX_SHORTCUT_KEYS,
+)
+
+const allowedCharacters = computed(() => getSelectedLayout().charToHid)
 
 // --- Title persistence (localStorage) ---
 
@@ -134,7 +156,7 @@ function clearSlot(index: number) {
 
 // --- Sequence actions ---
 
-function createSequenceAction(type: 'keydown' | 'keyup' | 'delay'): SequenceAction {
+function createSequenceAction(type: SequenceActionType): SequenceAction {
   return {
     id: nextId++,
     type,
@@ -143,7 +165,8 @@ function createSequenceAction(type: 'keydown' | 'keyup' | 'delay'): SequenceActi
   }
 }
 
-function addSequenceAction(type: 'keydown' | 'keyup' | 'delay') {
+function addSequenceAction(type: SequenceActionType) {
+  if (sequenceAtLimit.value) return
   selectedMacro.value.sequenceActions.push(createSequenceAction(type))
   addActionMenuOpen.value = false
 }
@@ -213,9 +236,34 @@ function moveActionDown(index: number) {
   actions[index] = next
 }
 
+// --- Macro type switching ---
+
+function switchMacroType(newType: MacroType) {
+  const macro = selectedMacro.value
+  if (macro.macroType === newType) return
+
+  macro.sequenceActions = []
+  macro.shortcutKeys = []
+  macro.typeString = ''
+  macro.macroType = newType
+}
+
+// --- String input filtering ---
+
+function filterTypeString(event: Event) {
+  const textarea = event.target as HTMLTextAreaElement
+  const charMap = allowedCharacters.value
+  const filtered = [...textarea.value]
+    .filter((character) => charMap.has(character))
+    .slice(0, MAX_STRING_CHARACTERS)
+    .join('')
+  selectedMacro.value.typeString = filtered
+}
+
 // --- Shortcut keys ---
 
 function addShortcutKey() {
+  if (shortcutAtLimit.value) return
   selectedMacro.value.shortcutKeys.push({
     id: nextId++,
     keycode: 0,
@@ -251,7 +299,7 @@ function assignFromPalette(code: number) {
       existingKey.keycode = code
       existingKey.label = label
       selectedShortcutKeyId.value = null
-    } else {
+    } else if (!shortcutAtLimit.value) {
       macro.shortcutKeys.push({
         id: nextId++,
         keycode: code,
@@ -260,6 +308,134 @@ function assignFromPalette(code: number) {
     }
   }
 }
+
+// --- Device communication ---
+
+async function loadMacroFromDevice(slotIndex: number) {
+  if (deviceStore.demoMode || !deviceStore.isConnected) return
+  if (loadedSlotIndices.has(slotIndex)) return
+
+  macroLoading.value = true
+  try {
+    const rawBytes = await deviceStore.requestMacro(slotIndex)
+    if (selectedSlotIndex.value !== slotIndex) return // user switched away
+
+    const decoded = decodeMacro(rawBytes, getSelectedLayout().hidToChar)
+    const slot = macroSlots.value[slotIndex]
+    const savedTitle = slot.title
+
+    if (decoded.isEmpty) {
+      macroSlots.value[slotIndex] = createEmptySlot()
+      macroSlots.value[slotIndex].title = savedTitle
+    } else {
+      slot.macroType = decoded.macroType
+      slot.sequenceActions = decoded.sequenceActions.map((action) => ({
+        id: nextId++,
+        type: action.type,
+        keycode: action.keycode,
+        label: action.keycode !== undefined ? keycodeLabel(action.keycode) : undefined,
+        delayMs: action.delayMs,
+        selected: false,
+      }))
+      slot.shortcutKeys = decoded.shortcutKeys.map((key) => ({
+        id: nextId++,
+        keycode: key.keycode,
+        label: keycodeLabel(key.keycode),
+      }))
+      slot.typeString = decoded.typeString
+    }
+    loadedSlotIndices.add(slotIndex)
+  } catch (error) {
+    console.error(`Failed to load macro slot ${slotIndex}:`, error)
+  } finally {
+    macroLoading.value = false
+  }
+}
+
+async function saveMacroToDevice() {
+  if (deviceStore.demoMode || !deviceStore.isConnected) return
+
+  macroSaving.value = true
+  try {
+    const slot = selectedMacro.value
+    const slotIndex = selectedSlotIndex.value
+
+    const isEmpty =
+      (slot.macroType === 'sequence' && slot.sequenceActions.length === 0) ||
+      (slot.macroType === 'shortcut' && slot.shortcutKeys.length === 0) ||
+      (slot.macroType === 'string' && slot.typeString === '')
+
+    if (isEmpty) {
+      await deviceStore.clearMacro(slotIndex)
+    } else {
+      const { actionCount, data } = encodeMacro({
+        macroType: slot.macroType,
+        sequenceActions: slot.sequenceActions,
+        shortcutKeys: slot.shortcutKeys,
+        typeString: slot.typeString,
+      }, getSelectedLayout().charToHid)
+      await deviceStore.setMacro(slotIndex, actionCount, data)
+    }
+  } catch (error) {
+    console.error('Failed to save macro:', error)
+  } finally {
+    macroSaving.value = false
+  }
+}
+
+async function loadAllMacrosFromDevice() {
+  if (deviceStore.demoMode || !deviceStore.isConnected) return
+
+  macroLoading.value = true
+  loadedSlotIndices.clear()
+  try {
+    for (let slotIndex = 0; slotIndex < MACRO_SLOT_COUNT; slotIndex++) {
+      const rawBytes = await deviceStore.requestMacro(slotIndex)
+      console.log(`Raw bytes for slot ${slotIndex}:`, rawBytes)
+      const decoded = decodeMacro(rawBytes, getSelectedLayout().hidToChar)
+      const slot = macroSlots.value[slotIndex]
+      const savedTitle = slot.title
+
+      if (decoded.isEmpty) {
+        macroSlots.value[slotIndex] = createEmptySlot()
+        macroSlots.value[slotIndex].title = savedTitle
+      } else {
+        slot.macroType = decoded.macroType
+        slot.sequenceActions = decoded.sequenceActions.map((action) => ({
+          id: nextId++,
+          type: action.type,
+          keycode: action.keycode,
+          label: action.keycode !== undefined ? keycodeLabel(action.keycode) : undefined,
+          delayMs: action.delayMs,
+          selected: false,
+        }))
+        slot.shortcutKeys = decoded.shortcutKeys.map((key) => ({
+          id: nextId++,
+          keycode: key.keycode,
+          label: keycodeLabel(key.keycode),
+        }))
+        slot.typeString = decoded.typeString
+      }
+      loadedSlotIndices.add(slotIndex)
+    }
+  } catch (error) {
+    console.error('Failed to load macros from device:', error)
+  } finally {
+    macroLoading.value = false
+  }
+}
+
+onMounted(() => {
+  if (!deviceStore.demoMode && deviceStore.isConnected) {
+    loadMacroFromDevice(selectedSlotIndex.value)
+  }
+})
+
+watch(selectedSlotIndex, (newIndex) => {
+  if (!deviceStore.demoMode && deviceStore.isConnected) {
+    loadMacroFromDevice(newIndex)
+  }
+})
 </script>
 
 <template>
@@ -268,12 +444,26 @@ function assignFromPalette(code: number) {
     <!-- Header -->
     <header class="flex items-center justify-between border-b border-border px-6 py-4">
       <p class="text-sm text-text-muted">Configure macro sequences</p>
-      <button
-        class="flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-bg transition-colors hover:bg-accent-hover"
-      >
-        <Save :size="16" />
-        Save Changes
-      </button>
+      <div class="flex gap-2">
+        <button
+          class="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-text-light transition-colors hover:border-text-muted hover:text-text-heading disabled:opacity-40"
+          :disabled="macroLoading || !deviceStore.isConnected || deviceStore.demoMode"
+          @click="loadAllMacrosFromDevice"
+        >
+          <Loader2 v-if="macroLoading" :size="16" class="animate-spin" />
+          <Download v-else :size="16" />
+          {{ macroLoading ? 'Loading...' : 'Load All' }}
+        </button>
+        <button
+          class="flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-bg transition-colors hover:bg-accent-hover disabled:opacity-40"
+          :disabled="macroSaving || !deviceStore.isConnected || deviceStore.demoMode"
+          @click="saveMacroToDevice"
+        >
+          <Loader2 v-if="macroSaving" :size="16" class="animate-spin" />
+          <Save v-else :size="16" />
+          {{ macroSaving ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </div>
     </header>
 
     <!-- Content - three panels side by side -->
@@ -343,7 +533,7 @@ function assignFromPalette(code: number) {
                 ? 'border-accent bg-accent/10'
                 : 'border-border hover:border-text-muted'
             "
-            @click="selectedMacro.macroType = option.value"
+            @click="switchMacroType(option.value)"
           >
             <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-surface-raised">
               <Timer    v-if="option.value === 'sequence'"  :size="18" class="text-text-muted" />
@@ -369,7 +559,15 @@ function assignFromPalette(code: number) {
         <!-- Timed sequence editor -->
         <template v-if="selectedMacro.macroType === 'sequence'">
           <div class="flex items-center justify-between">
-            <h3 class="text-sm font-medium text-text-light">Sequence Actions</h3>
+            <div class="flex items-center gap-2">
+              <h3 class="text-sm font-medium text-text-light">Sequence Actions</h3>
+              <span
+                class="text-xs"
+                :class="sequenceAtLimit ? 'text-error' : 'text-text-muted'"
+              >
+                {{ selectedMacro.sequenceActions.length }} / {{ MAX_SEQUENCE_ACTIONS }}
+              </span>
+            </div>
             <div class="flex gap-2">
               <button
                 class="flex items-center gap-1.5 rounded border border-border px-3 py-1 text-xs text-text-muted transition-colors hover:border-text-muted hover:text-text-light"
@@ -427,7 +625,8 @@ function assignFromPalette(code: number) {
 
               <!-- Action type icon -->
               <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-surface-raised">
-                <ArrowDownToLine v-if="action.type === 'keydown'"  :size="16" class="text-text-muted" />
+                <ArrowDownUp     v-if="action.type === 'tap'"       :size="16" class="text-text-muted" />
+                <ArrowDownToLine v-else-if="action.type === 'keydown'"  :size="16" class="text-text-muted" />
                 <ArrowUpFromLine v-else-if="action.type === 'keyup'" :size="16" class="text-text-muted" />
                 <Clock           v-else-if="action.type === 'delay'" :size="16" class="text-text-muted" />
               </div>
@@ -511,7 +710,8 @@ function assignFromPalette(code: number) {
             <!-- Add action button with dropdown -->
             <div class="relative">
               <button
-                class="flex w-full items-center justify-center rounded-lg border border-border py-2 text-text-muted transition-colors hover:border-text-muted hover:text-text-light"
+                class="flex w-full items-center justify-center rounded-lg border border-border py-2 text-text-muted transition-colors hover:border-text-muted hover:text-text-light disabled:opacity-40"
+                :disabled="sequenceAtLimit"
                 @click="addActionMenuOpen = !addActionMenuOpen"
               >
                 <Plus :size="18" />
@@ -521,6 +721,12 @@ function assignFromPalette(code: number) {
                 v-if="addActionMenuOpen"
                 class="absolute top-full z-10 mt-1 flex w-full flex-col overflow-hidden rounded-lg border border-border bg-surface shadow-lg"
               >
+                <button
+                  class="px-4 py-2.5 text-left text-sm text-text-light transition-colors hover:bg-surface-raised"
+                  @click="addSequenceAction('tap')"
+                >
+                  Tap
+                </button>
                 <button
                   class="px-4 py-2.5 text-left text-sm text-text-light transition-colors hover:bg-surface-raised"
                   @click="addSequenceAction('keydown')"
@@ -546,7 +752,15 @@ function assignFromPalette(code: number) {
 
         <!-- Shortcut editor -->
         <template v-else-if="selectedMacro.macroType === 'shortcut'">
-          <h3 class="text-sm font-medium text-text-light">Shortcut Keys</h3>
+          <div class="flex items-center gap-2">
+            <h3 class="text-sm font-medium text-text-light">Shortcut Keys</h3>
+            <span
+              class="text-xs"
+              :class="shortcutAtLimit ? 'text-error' : 'text-text-muted'"
+            >
+              {{ selectedMacro.shortcutKeys.length }} / {{ MAX_SHORTCUT_KEYS }}
+            </span>
+          </div>
           <p class="mt-1 text-xs text-text-muted">
             All keys will be pressed simultaneously, like Ctrl+Alt+Del.
           </p>
@@ -591,6 +805,7 @@ function assignFromPalette(code: number) {
             </div>
 
             <button
+              v-if="!shortcutAtLimit"
               class="flex items-center gap-1.5 rounded-lg border border-dashed border-border px-3 py-2 text-xs text-text-muted transition-colors hover:border-text-muted hover:text-text-light"
               @click="addShortcutKey"
             >
@@ -613,16 +828,19 @@ function assignFromPalette(code: number) {
           <h3 class="text-sm font-medium text-text-light">Type String</h3>
           <p class="mt-1 text-xs text-text-muted">
             The macro will type out this text when triggered.
+            Only characters supported by the selected keyboard layout are allowed.
           </p>
 
           <textarea
-            v-model="selectedMacro.typeString"
+            :value="selectedMacro.typeString"
+            :maxlength="MAX_STRING_CHARACTERS"
             placeholder="Enter text to type out (e.g. your email address)"
             class="mt-4 w-full flex-1 resize-none rounded-lg border border-border bg-surface-raised p-3 text-sm text-text-light placeholder:text-text-muted focus:outline-none focus:ring-1 focus:ring-accent"
+            @input="filterTypeString"
           />
 
-          <div class="mt-2 text-xs text-text-muted">
-            {{ selectedMacro.typeString.length }} characters
+          <div class="mt-2 text-xs" :class="selectedMacro.typeString.length >= MAX_STRING_CHARACTERS ? 'text-error' : 'text-text-muted'">
+            {{ selectedMacro.typeString.length }} / {{ MAX_STRING_CHARACTERS }} characters
           </div>
         </template>
 

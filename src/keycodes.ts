@@ -3,6 +3,8 @@
  * Each entry maps a numeric HID keycode to a display label.
  */
 
+import { getSelectedLayout } from '@/keyboardLayouts'
+
 export interface Keycode {
   code: number
   label: string
@@ -12,7 +14,7 @@ export interface Keycode {
 
 // Custom
 export const KC_TRNS: Keycode       = { code: 0x00, label: 'TRNS' }
-export const KC_LAY_NEXT: Keycode   = { code: 0xf4, label: 'LY NXT' }
+export const KC_LAY_NEXT: Keycode   = { code: 0x00fc, label: 'LY NXT' }
 
 // Letters
 export const KC_A: Keycode = { code: 0x04, label: 'A' }
@@ -263,7 +265,13 @@ const allKeycodes: Keycode[] = KEYCODE_CATEGORIES.flatMap((c) => c.keys)
 
 const codeToKeycode = new Map<number, Keycode>(allKeycodes.map((kc) => [kc.code, kc]))
 
-/** Get the display label for a keycode number. Returns hex if unknown. */
+/** Get the display label for a keycode number, using selected keyboard layout for basic keys. */
 export function keycodeLabel(code: number): string {
+  if ((code >= 0x04 && code <= 0x38) || code === 0x64) {
+    const layoutChar = getSelectedLayout().hidToChar.get(`0:${code}`)
+    if (layoutChar && layoutChar.trim().length > 0) {
+      return layoutChar.length === 1 ? layoutChar.toUpperCase() : layoutChar
+    }
+  }
   return codeToKeycode.get(code)?.label ?? `0x${code.toString(16).padStart(2, '0').toUpperCase()}`
 }
