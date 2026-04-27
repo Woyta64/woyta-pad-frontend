@@ -15,7 +15,9 @@
     "subtitle": "Connecte ton Woyta-Pad pour commencer",
     "webHidUnsupported": "Ce navigateur ne prend pas en charge WebHID. Utilise Chrome ou Edge.",
     "connectDevice": "Connecter l'appareil",
-    "tryWithoutDevice": "Essayer sans appareil"
+    "tryWithoutDevice": "Essayer sans appareil",
+    "linuxPermissionHint": "Sous Linux, WebHID nécessite une règle udev pour accéder à l'appareil. Crée le fichier /etc/udev/rules.d/99-woyta-pad.rules avec le contenu suivant, puis reconnecte l'appareil :",
+    "linuxUdevReload": "Ensuite, recharge udev : sudo udevadm control --reload-rules && sudo udevadm trigger"
   },
   "keymap": {
     "readingKeymap": "Lecture du mappage depuis l'appareil…",
