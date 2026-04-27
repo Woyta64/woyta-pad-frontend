@@ -15,7 +15,9 @@
     "subtitle": "Pripojte Woyta-Pad a začnite konfigurovať",
     "webHidUnsupported": "Tento prehliadač nepodporuje WebHID. Použite Chrome alebo Edge.",
     "connectDevice": "Pripojiť zariadenie",
-    "tryWithoutDevice": "Vyskúšať bez zariadenia"
+    "tryWithoutDevice": "Vyskúšať bez zariadenia",
+    "linuxPermissionHint": "Na Linuxe je pre prístup k zariadeniu cez WebHID potrebné pravidlo udev. Vytvorte súbor /etc/udev/rules.d/99-woyta-pad.rules s týmto obsahom a znovu pripojte zariadenie:",
+    "linuxUdevReload": "Potom znovu načítajte udev: sudo udevadm control --reload-rules && sudo udevadm trigger"
   },
   "keymap": {
     "readingKeymap": "Načítavanie mapovania zo zariadenia…",

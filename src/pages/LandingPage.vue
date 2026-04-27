@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { Keyboard } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import { useDeviceStore } from '@/stores/device'
@@ -7,6 +8,11 @@ const router = useRouter()
 const deviceStore = useDeviceStore()
 
 const hidSupported = 'hid' in navigator
+const isLinux = navigator.userAgent.includes('Linux') && !navigator.userAgent.includes('Android')
+
+const showLinuxHint = computed(() =>
+  isLinux && !!deviceStore.error && /NotAllowedError|failed to open/i.test(deviceStore.error)
+)
 
 async function connectDevice() {
   try {
@@ -38,6 +44,13 @@ function tryWithoutDevice() {
       <p v-if="deviceStore.error" class="text-sm text-error">
         {{ deviceStore.error }}
       </p>
+
+      <div v-if="showLinuxHint" class="max-w-sm rounded-lg border border-border bg-surface-raised p-4 text-left">
+        <p class="text-xs text-text-light leading-relaxed">{{ $t('landing.linuxPermissionHint') }}</p>
+        <pre class="mt-2 rounded bg-surface p-2 text-xs text-text-light"># Woyta-Pad WebHID Access
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="cafe", ATTRS{idProduct}=="4243", MODE="0666"</pre>
+        <p class="mt-2 text-xs text-text-muted">{{ $t('landing.linuxUdevReload') }}</p>
+      </div>
 
       <button
         :disabled="!hidSupported"

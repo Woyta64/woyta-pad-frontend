@@ -1,5 +1,54 @@
-# Vue 3 + TypeScript + Vite
+# Woyta-Pad Configurator
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Web-based configurator for the [Woyta-Pad](https://github.com/Woyta64/woyta-pad-firmware) — an RP2040-based macropad. Runs entirely in the browser over WebHID. No drivers, no desktop app.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Features
+
+- **Keymap editor** — remap keys and encoder actions across multiple layers
+- **Macro editor** — create timed sequences, keyboard shortcuts, and text macros
+- **Firmware update** — download the latest firmware for your device
+- **9 languages** — English, Čeština, Slovenčina, Deutsch, Français, Italiano, Español, 日本語, 한국어
+
+## Requirements
+
+A browser with WebHID support: **Chrome** or **Edge** (desktop). Firefox and Safari are not supported.
+
+### Linux — udev rule
+
+On Linux, Chrome can only access HID devices that are explicitly allowed via a udev rule. Create the file `/etc/udev/rules.d/99-woyta-pad.rules` with:
+
+```
+# Woyta-Pad WebHID Access
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="cafe", ATTRS{idProduct}=="4243", MODE="0666"
+```
+
+Then reload udev and re-plug the device:
+
+```bash
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+
+## Usage
+
+The configurator is hosted at **[launcher.woyta.dev](https://launcher.woyta.dev)** — no installation needed, just open it in Chrome or Edge and connect your device.
+
+## Self-Hosting
+
+If you prefer to run it locally or on your own server:
+
+```bash
+pnpm install
+pnpm build
+```
+
+Then serve the contents of the `dist/` folder with any static file server. For a quick local preview:
+
+```bash
+pnpm preview
+```
+
+For development with hot reload:
+
+```bash
+pnpm dev
+```
