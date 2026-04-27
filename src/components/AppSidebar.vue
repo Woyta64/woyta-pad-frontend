@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { Keyboard, Zap, Download, Settings, HelpCircle } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useDeviceStore } from '@/stores/device'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const deviceStore = useDeviceStore()
@@ -13,14 +15,14 @@ async function disconnect() {
 }
 
 const topNavItems = [
-  { id: 'keymap', label: 'Keymap', icon: Keyboard, to: '/keymap' },
-  { id: 'macros', label: 'Macros', icon: Zap, to: '/macro' },
+  { id: 'keymap', labelKey: 'sidebar.keymap', icon: Keyboard, to: '/keymap' },
+  { id: 'macros', labelKey: 'sidebar.macros', icon: Zap, to: '/macro' },
 ]
 
 const bottomNavItems = [
-  { id: 'firmware', label: 'Firmware Update', icon: Download, to: '/firmware' },
-  { id: 'settings', label: 'Settings', icon: Settings, to: '/settings' },
-  { id: 'help', label: 'Help & Support', icon: HelpCircle, to: '/help' },
+  { id: 'firmware', labelKey: 'sidebar.firmwareUpdate', icon: Download, to: '/firmware' },
+  { id: 'settings', labelKey: 'sidebar.settings', icon: Settings, to: '/settings' },
+  { id: 'help', labelKey: 'sidebar.helpAndSupport', icon: HelpCircle, to: '/help' },
 ]
 </script>
 
@@ -28,7 +30,7 @@ const bottomNavItems = [
   <aside class="flex w-60 flex-col border-r border-border bg-surface">
     <!-- Header -->
     <div class="p-5 pb-6">
-      <h1 class="text-lg font-semibold text-text-heading">Woyta Pad Launcher</h1>
+      <h1 class="text-lg font-semibold text-text-heading">{{ $t('sidebar.title') }}</h1>
     </div>
 
     <!-- Device card -->
@@ -40,7 +42,7 @@ const bottomNavItems = [
         <div>
           <div class="text-sm font-medium text-text-heading">{{ deviceStore.productName ?? 'Demo Pad' }}</div>
           <div class="text-xs" :class="deviceStore.isConnected ? 'text-accent' : 'text-text-muted'">
-            {{ deviceStore.isConnected ? 'Connected' : 'Not connected' }}
+            {{ deviceStore.isConnected ? $t('sidebar.connected') : $t('sidebar.notConnected') }}
           </div>
         </div>
       </div>
@@ -52,7 +54,7 @@ const bottomNavItems = [
         class="w-full rounded-lg border border-border py-3 text-sm font-medium text-text-muted transition-all duration-150 hover:border-error hover:bg-error hover:text-bg"
         @click="disconnect"
       >
-        Disconnect Device
+        {{ $t('sidebar.disconnect') }}
       </button>
     </div>
 
@@ -70,7 +72,7 @@ const bottomNavItems = [
             "
           >
             <component :is="item.icon" :size="18" />
-            {{ item.label }}
+            {{ t(item.labelKey) }}
           </router-link>
         </li>
       </ul>
@@ -85,7 +87,7 @@ const bottomNavItems = [
             class="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm text-text-muted transition-colors hover:text-text-light hover:bg-text-heading/5"
           >
             <component :is="item.icon" :size="18" />
-            {{ item.label }}
+            {{ t(item.labelKey) }}
           </router-link>
         </li>
       </ul>

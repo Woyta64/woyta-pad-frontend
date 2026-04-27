@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { Search, X } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 import { KEYCODE_CATEGORIES, keycodeLabel, type Keycode } from '@/keycodes'
+
+const { t } = useI18n()
 
 const emit = defineEmits<{
   assign: [keycode: number]
@@ -51,7 +54,7 @@ const activeKeys = computed((): Keycode[] => {
           "
           @click="activeCategory = cat.id"
         >
-          {{ cat.label }}
+          {{ t(`palette.categories.${cat.id}`) }}
         </button>
       </div>
 
@@ -60,7 +63,7 @@ const activeKeys = computed((): Keycode[] => {
         <input
           v-model="search"
           type="text"
-          placeholder="Search any codes..."
+          :placeholder="$t('palette.searchPlaceholder')"
           class="bg-transparent text-sm text-text-light placeholder:text-text-muted outline-none"
         />
         <button v-if="search" class="text-text-muted hover:text-text-light" @click="search = ''">

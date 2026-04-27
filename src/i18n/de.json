@@ -1,0 +1,104 @@
+{
+  "sidebar": {
+    "title": "Woyta Pad Launcher",
+    "connected": "Verbunden",
+    "notConnected": "Nicht verbunden",
+    "disconnect": "Verbindung trennen",
+    "keymap": "Tastaturbelegung",
+    "macros": "Makros",
+    "firmwareUpdate": "Firmware-Update",
+    "settings": "Einstellungen",
+    "helpAndSupport": "Hilfe"
+  },
+  "landing": {
+    "title": "Woyta-Pad Launcher",
+    "subtitle": "Verbinde dein Woyta-Pad und leg los",
+    "webHidUnsupported": "WebHID wird in diesem Browser nicht unterstützt. Bitte Chrome oder Edge verwenden.",
+    "connectDevice": "Gerät verbinden",
+    "tryWithoutDevice": "Ohne Gerät ausprobieren"
+  },
+  "keymap": {
+    "readingKeymap": "Tastaturbelegung wird vom Gerät gelesen…",
+    "retry": "Erneut versuchen",
+    "configureDescription": "Tastenzuweisung je Ebene konfigurieren",
+    "layers": "EBENEN",
+    "saving": "Wird gespeichert…",
+    "saveChanges": "Änderungen speichern"
+  },
+  "macro": {
+    "configureDescription": "Makros erstellen und verwalten",
+    "loading": "Wird geladen…",
+    "loadAll": "Alle laden",
+    "saving": "Wird gespeichert…",
+    "saveChanges": "Änderungen speichern",
+    "macroTitle": "Makro",
+    "assignHint": "Makro auswählen und dann eine Taste in der Belegung oben anklicken, um es zuzuweisen.",
+    "customTitle": "Eigener Name (optional)",
+    "macroType": "Makrotyp",
+    "timedSequence": "Zeitgesteuerte Tastenfolge",
+    "timedSequenceDescription": "Tastendrücke und -freigaben mit optionalen Pausen dazwischen",
+    "shortcut": "Tastenkürzel",
+    "shortcutDescription": "Mehrere Tasten gleichzeitig drücken",
+    "typeString": "Text tippen",
+    "typeStringDescription": "Gibt automatisch einen Text ein",
+    "sequenceActions": "Aktionen",
+    "deselectAll": "Auswahl aufheben",
+    "selectAll": "Alle auswählen",
+    "duplicate": "Duplizieren",
+    "delete": "Löschen",
+    "delayRange": "ms · 1 – 60.000",
+    "tap": "Tippen (drücken & loslassen)",
+    "keyDown": "Taste drücken",
+    "keyUp": "Taste loslassen",
+    "delay": "Pause",
+    "shortcutKeys": "Tasten",
+    "shortcutHint": "Alle Tasten werden gleichzeitig gedrückt — wie bei Strg+Alt+Entf.",
+    "addKey": "Taste hinzufügen",
+    "shortcutEmpty": "Tasten hinzufügen, um ein Kürzel zu erstellen",
+    "typeStringHint": "Wenn das Makro ausgelöst wird, wird dieser Text automatisch eingegeben. Es sind nur Zeichen erlaubt, die das gewählte Tastaturlayout unterstützt.",
+    "typeStringPlaceholder": "Text eingeben, der getippt werden soll (z. B. E-Mail-Adresse)",
+    "characters": "Zeichen"
+  },
+  "firmware": {
+    "title": "Firmware-Update",
+    "currentFirmware": "Aktuelle Firmware",
+    "keyboard": "Tastatur",
+    "notConnected": "Nicht verbunden",
+    "version": "Version",
+    "unknown": "Unbekannt",
+    "startingDownload": "Download wird gestartet…",
+    "downloadLatest": "Neueste Firmware herunterladen",
+    "flashInstructions": "BOOT-Taste am Gerät gedrückt halten und per USB verbinden. Das Gerät erscheint als Laufwerk — {file} einfach hineinkopieren."
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "theme": "Design",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "language": "Sprache",
+    "keyboardLayout": "Tastaturlayout",
+    "keyboardLayoutHint": "Bestimmt, welche Zeichen in Textmakros verwendet werden können. Layout passend zur Betriebssystem-Tastatureinstellung wählen.",
+    "deviceLogs": "Geräteprotokoll",
+    "noLogs": "Noch keine Einträge vorhanden."
+  },
+  "help": {
+    "title": "Hilfe",
+    "about": "Woyta Pad ist ein Makropad auf Basis des RP2040. Mit diesem Konfigurator lassen sich Tasten neu belegen, Encoder-Aktionen vergeben und Ebenen verwalten — direkt über WebHID, ohne Treiber.",
+    "getHelp": "Support",
+    "reportBug": "Fehler melden oder Funktion vorschlagen",
+    "firmwareSource": "Firmware-Quellcode"
+  },
+  "palette": {
+    "searchPlaceholder": "Tasten suchen…",
+    "categories": {
+      "basic": "Grundlegende",
+      "mod": "Modifikatoren",
+      "nav": "Navigation",
+      "fn": "Funktionstasten",
+      "numpad": "Numpad",
+      "media": "Medien",
+      "macro": "Makros",
+      "custom": "Benutzerdefiniert"
+    }
+  }
+}

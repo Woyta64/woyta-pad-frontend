@@ -1,0 +1,104 @@
+{
+  "sidebar": {
+    "title": "Woyta Pad Launcher",
+    "connected": "Connected",
+    "notConnected": "Not connected",
+    "disconnect": "Disconnect Device",
+    "keymap": "Keymap",
+    "macros": "Macros",
+    "firmwareUpdate": "Firmware Update",
+    "settings": "Settings",
+    "helpAndSupport": "Help & Support"
+  },
+  "landing": {
+    "title": "Woyta-Pad Launcher",
+    "subtitle": "Connect your Woyta-Pad to get started",
+    "webHidUnsupported": "WebHID is not supported in this browser. Use Chrome or Edge.",
+    "connectDevice": "Connect Device",
+    "tryWithoutDevice": "Try without device"
+  },
+  "keymap": {
+    "readingKeymap": "Reading keymap from device...",
+    "retry": "Retry",
+    "configureDescription": "Configure Woyta Pad layer configuration",
+    "layers": "LAYERS",
+    "saving": "Saving...",
+    "saveChanges": "Save Changes"
+  },
+  "macro": {
+    "configureDescription": "Configure macro sequences",
+    "loading": "Loading...",
+    "loadAll": "Load All",
+    "saving": "Saving...",
+    "saveChanges": "Save Changes",
+    "macroTitle": "Macro",
+    "assignHint": "To assign macro, select macro and click keys on the above keymap.",
+    "customTitle": "Custom title (optional)",
+    "macroType": "Macro Type",
+    "timedSequence": "Timed Sequence",
+    "timedSequenceDescription": "Key presses and releases with optional delays",
+    "shortcut": "Shortcut",
+    "shortcutDescription": "All keys pressed simultaneously",
+    "typeString": "Type String",
+    "typeStringDescription": "Types out a text string",
+    "sequenceActions": "Sequence Actions",
+    "deselectAll": "Deselect All",
+    "selectAll": "Select All",
+    "duplicate": "Duplicate",
+    "delete": "Delete",
+    "delayRange": "ms \u00b7 1 \u2013 60 000",
+    "tap": "Tap",
+    "keyDown": "Key Down",
+    "keyUp": "Key Up",
+    "delay": "Delay",
+    "shortcutKeys": "Shortcut Keys",
+    "shortcutHint": "All keys will be pressed simultaneously, like Ctrl+Alt+Del.",
+    "addKey": "Add Key",
+    "shortcutEmpty": "Add keys to create a keyboard shortcut",
+    "typeStringHint": "The macro will type out this text when triggered. Only characters supported by the selected keyboard layout are allowed.",
+    "typeStringPlaceholder": "Enter text to type out (e.g. your email address)",
+    "characters": "characters"
+  },
+  "firmware": {
+    "title": "Firmware Update",
+    "currentFirmware": "Current Firmware",
+    "keyboard": "Keyboard",
+    "notConnected": "Not connected",
+    "version": "Version",
+    "unknown": "Unknown",
+    "startingDownload": "Starting download\u2026",
+    "downloadLatest": "Download Latest Firmware",
+    "flashInstructions": "Flash by holding BOOT button on the device, then drag the {file} onto the USB drive that appears."
+  },
+  "settings": {
+    "title": "Settings",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "language": "Language",
+    "keyboardLayout": "Keyboard Layout",
+    "keyboardLayoutHint": "Affects string macro character encoding. Select the layout matching your OS keyboard setting.",
+    "deviceLogs": "Device Logs",
+    "noLogs": "No logs available yet."
+  },
+  "help": {
+    "title": "Help & Support",
+    "about": "Woyta Pad is an RP2040-based macropad. This configurator lets you remap keys, assign encoder actions, and manage layers \u2014 all over WebHID, no drivers needed.",
+    "getHelp": "Get Help",
+    "reportBug": "Report a bug or request a feature",
+    "firmwareSource": "Firmware source code"
+  },
+  "palette": {
+    "searchPlaceholder": "Search any codes...",
+    "categories": {
+      "basic": "Basic",
+      "mod": "Modifiers",
+      "nav": "Navigation",
+      "fn": "Function",
+      "numpad": "Numpad",
+      "media": "Media",
+      "macro": "Macros",
+      "custom": "Custom"
+    }
+  }
+}

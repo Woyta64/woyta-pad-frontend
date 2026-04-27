@@ -29,11 +29,11 @@ function tryWithoutDevice() {
       <div class="flex h-20 w-20 items-center justify-center rounded-2xl bg-accent/15 text-accent">
         <Keyboard :size="40" />
       </div>
-      <h1 class="text-3xl font-semibold text-text-heading">Woyta-Pad Launcher</h1>
-      <p class="text-text-muted">Connect your Woyta-Pad to get started</p>
+      <h1 class="text-3xl font-semibold text-text-heading">{{ $t('landing.title') }}</h1>
+      <p class="text-text-muted">{{ $t('landing.subtitle') }}</p>
 
       <p v-if="!hidSupported" class="text-sm text-error">
-        WebHID is not supported in this browser. Use Chrome or Edge.
+        {{ $t('landing.webHidUnsupported') }}
       </p>
       <p v-if="deviceStore.error" class="text-sm text-error">
         {{ deviceStore.error }}
@@ -44,13 +44,13 @@ function tryWithoutDevice() {
         class="mt-4 rounded-lg bg-accent px-8 py-3 font-medium text-bg transition-colors hover:bg-accent-hover disabled:opacity-40 disabled:cursor-not-allowed"
         @click="connectDevice"
       >
-        Connect Device
+        {{ $t('landing.connectDevice') }}
       </button>
       <button
         class="mt-4 rounded-lg bg-accent px-8 py-3 font-medium text-bg transition-colors hover:bg-accent-hover"
         @click="tryWithoutDevice"
       >
-        Try without device
+        {{ $t('landing.tryWithoutDevice') }}
       </button>
     </div>
   </div>

@@ -7,11 +7,14 @@ import {
   ArrowDownToLine, ArrowUpFromLine, ArrowDownUp,
   Clock, Ellipsis, Check, Loader2, Download,
 } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 import KeyPalette from '@/components/KeyPalette.vue'
 import { keycodeLabel } from '@/keycodes'
 import { useDeviceStore } from '@/stores/device'
 import { encodeMacro, decodeMacro } from '@/macroCodec'
 import { getSelectedLayout } from '@/keyboardLayouts'
+
+const { t } = useI18n()
 
 // --- Types ---
 
@@ -43,8 +46,8 @@ interface MacroSlot {
 
 interface MacroTypeOption {
   value: MacroType
-  label: string
-  description: string
+  labelKey: string
+  descriptionKey: string
 }
 
 // --- Constants ---
@@ -59,18 +62,18 @@ const MACRO_TITLES_STORAGE_KEY = 'woyta-pad-macro-titles'
 const macroTypeOptions: MacroTypeOption[] = [
   {
     value: 'sequence',
-    label: 'Timed Sequence',
-    description: 'Key presses and releases with optional delays',
+    labelKey: 'macro.timedSequence',
+    descriptionKey: 'macro.timedSequenceDescription',
   },
   {
     value: 'shortcut',
-    label: 'Shortcut',
-    description: 'All keys pressed simultaneously',
+    labelKey: 'macro.shortcut',
+    descriptionKey: 'macro.shortcutDescription',
   },
   {
     value: 'string',
-    label: 'Type String',
-    description: 'Types out a text string',
+    labelKey: 'macro.typeString',
+    descriptionKey: 'macro.typeStringDescription',
   },
 ]
 
@@ -443,7 +446,7 @@ watch(selectedSlotIndex, (newIndex) => {
 
     <!-- Header -->
     <header class="flex items-center justify-between border-b border-border px-6 py-4">
-      <p class="text-sm text-text-muted">Configure macro sequences</p>
+      <p class="text-sm text-text-muted">{{ t('macro.configureDescription') }}</p>
       <div class="flex gap-2">
         <button
           class="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-text-light transition-colors hover:border-text-muted hover:text-text-heading disabled:opacity-40"
@@ -452,7 +455,7 @@ watch(selectedSlotIndex, (newIndex) => {
         >
           <Loader2 v-if="macroLoading" :size="16" class="animate-spin" />
           <Download v-else :size="16" />
-          {{ macroLoading ? 'Loading...' : 'Load All' }}
+          {{ macroLoading ? t('macro.loading') : t('macro.loadAll') }}
         </button>
         <button
           class="flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-bg transition-colors hover:bg-accent-hover disabled:opacity-40"
@@ -461,7 +464,7 @@ watch(selectedSlotIndex, (newIndex) => {
         >
           <Loader2 v-if="macroSaving" :size="16" class="animate-spin" />
           <Save v-else :size="16" />
-          {{ macroSaving ? 'Saving...' : 'Save Changes' }}
+          {{ macroSaving ? t('macro.saving') : t('macro.saveChanges') }}
         </button>
       </div>
     </header>
@@ -471,9 +474,9 @@ watch(selectedSlotIndex, (newIndex) => {
 
       <!-- Left panel - macro slot list -->
       <div class="flex w-lg shrink-0 flex-col rounded-lg border border-border bg-surface p-6">
-        <h2 class="text-sm font-semibold text-text-heading">Macro</h2>
+        <h2 class="text-sm font-semibold text-text-heading">{{ t('macro.macroTitle') }}</h2>
         <p class="mt-1 text-xs text-text-muted">
-          To assign macro, select macro and click keys on the above keymap.
+          {{ t('macro.assignHint') }}
         </p>
 
         <!-- Slot list -->
@@ -501,7 +504,7 @@ watch(selectedSlotIndex, (newIndex) => {
             <input
               v-model="slot.title"
               type="text"
-              placeholder="Custom title (optional)"
+              :placeholder="t('macro.customTitle')"
               class="min-w-0 flex-1 rounded bg-surface-raised px-2 py-1.5 text-xs text-text-light placeholder:text-text-muted focus:outline-none focus:ring-1 focus:ring-accent"
               @click.stop
             />
@@ -520,7 +523,7 @@ watch(selectedSlotIndex, (newIndex) => {
       <!-- Middle panel - macro type selector -->
       <div class="flex w-64 shrink-0 flex-col gap-4">
         <div class="flex items-center">
-          <h3 class="text-sm font-medium text-text-light">Macro Type</h3>
+          <h3 class="text-sm font-medium text-text-light">{{ t('macro.macroType') }}</h3>
         </div>
 
         <div class="flex flex-col gap-2">
@@ -545,9 +548,9 @@ watch(selectedSlotIndex, (newIndex) => {
                 class="block text-sm font-medium"
                 :class="selectedMacro.macroType === option.value ? 'text-accent' : 'text-text-light'"
               >
-                {{ option.label }}
+                {{ t(option.labelKey) }}
               </span>
-              <span class="block text-xs text-text-muted">{{ option.description }}</span>
+              <span class="block text-xs text-text-muted">{{ t(option.descriptionKey) }}</span>
             </span>
           </button>
         </div>
@@ -560,7 +563,7 @@ watch(selectedSlotIndex, (newIndex) => {
         <template v-if="selectedMacro.macroType === 'sequence'">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <h3 class="text-sm font-medium text-text-light">Sequence Actions</h3>
+              <h3 class="text-sm font-medium text-text-light">{{ t('macro.sequenceActions') }}</h3>
               <span
                 class="text-xs"
                 :class="sequenceAtLimit ? 'text-error' : 'text-text-muted'"
@@ -574,7 +577,7 @@ watch(selectedSlotIndex, (newIndex) => {
                 @click="toggleSelectAll"
               >
                 <Check :size="12" />
-                {{ allActionsSelected ? 'Deselect All' : 'Select All' }}
+                {{ allActionsSelected ? t('macro.deselectAll') : t('macro.selectAll') }}
               </button>
               <button
                 class="flex items-center gap-1.5 rounded border border-border px-3 py-1 text-xs text-text-muted transition-colors hover:border-text-muted hover:text-text-light disabled:opacity-40"
@@ -582,7 +585,7 @@ watch(selectedSlotIndex, (newIndex) => {
                 @click="duplicateSelectedActions"
               >
                 <Copy :size="12" />
-                Duplicate
+                {{ t('macro.duplicate') }}
               </button>
               <button
                 class="flex items-center gap-1.5 rounded border border-border px-3 py-1 text-xs text-text-muted transition-colors hover:border-error hover:text-error disabled:opacity-40"
@@ -590,7 +593,7 @@ watch(selectedSlotIndex, (newIndex) => {
                 @click="deleteSelectedActions"
               >
                 <Trash2 :size="12" />
-                Delete
+                {{ t('macro.delete') }}
               </button>
             </div>
           </div>
@@ -643,7 +646,7 @@ watch(selectedSlotIndex, (newIndex) => {
                   @change="capDelayMs(action)"
                 />
                 <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-text-muted">
-                  ms · 1 – 60 000
+                  {{ t('macro.delayRange') }}
                 </span>
               </div>
               <button
@@ -694,14 +697,14 @@ watch(selectedSlotIndex, (newIndex) => {
                     @click.stop="duplicateAction(action.id)"
                   >
                     <Copy :size="14" class="text-text-muted" />
-                    Duplicate
+                    {{ t('macro.duplicate') }}
                   </button>
                   <button
                     class="flex items-center gap-2.5 px-4 py-2.5 text-left text-sm text-error transition-colors hover:bg-error/10"
                     @click.stop="deleteAction(action.id)"
                   >
                     <Trash2 :size="14" />
-                    Delete
+                    {{ t('macro.delete') }}
                   </button>
                 </div>
               </div>
@@ -725,25 +728,25 @@ watch(selectedSlotIndex, (newIndex) => {
                   class="px-4 py-2.5 text-left text-sm text-text-light transition-colors hover:bg-surface-raised"
                   @click="addSequenceAction('tap')"
                 >
-                  Tap
+                  {{ t('macro.tap') }}
                 </button>
                 <button
                   class="px-4 py-2.5 text-left text-sm text-text-light transition-colors hover:bg-surface-raised"
                   @click="addSequenceAction('keydown')"
                 >
-                  Key Down
+                  {{ t('macro.keyDown') }}
                 </button>
                 <button
                   class="px-4 py-2.5 text-left text-sm text-text-light transition-colors hover:bg-surface-raised"
                   @click="addSequenceAction('keyup')"
                 >
-                  Key Up
+                  {{ t('macro.keyUp') }}
                 </button>
                 <button
                   class="px-4 py-2.5 text-left text-sm text-text-light transition-colors hover:bg-surface-raised"
                   @click="addSequenceAction('delay')"
                 >
-                  Delay
+                  {{ t('macro.delay') }}
                 </button>
               </div>
             </div>
@@ -753,7 +756,7 @@ watch(selectedSlotIndex, (newIndex) => {
         <!-- Shortcut editor -->
         <template v-else-if="selectedMacro.macroType === 'shortcut'">
           <div class="flex items-center gap-2">
-            <h3 class="text-sm font-medium text-text-light">Shortcut Keys</h3>
+            <h3 class="text-sm font-medium text-text-light">{{ t('macro.shortcutKeys') }}</h3>
             <span
               class="text-xs"
               :class="shortcutAtLimit ? 'text-error' : 'text-text-muted'"
@@ -762,7 +765,7 @@ watch(selectedSlotIndex, (newIndex) => {
             </span>
           </div>
           <p class="mt-1 text-xs text-text-muted">
-            All keys will be pressed simultaneously, like Ctrl+Alt+Del.
+            {{ t('macro.shortcutHint') }}
           </p>
 
           <!-- Key combination display -->
@@ -810,7 +813,7 @@ watch(selectedSlotIndex, (newIndex) => {
               @click="addShortcutKey"
             >
               <Plus :size="14" />
-              Add Key
+              {{ t('macro.addKey') }}
             </button>
           </div>
 
@@ -819,28 +822,27 @@ watch(selectedSlotIndex, (newIndex) => {
             v-if="selectedMacro.shortcutKeys.length === 0"
             class="flex flex-1 items-center justify-center"
           >
-            <p class="text-sm text-text-muted">Add keys to create a keyboard shortcut</p>
+            <p class="text-sm text-text-muted">{{ t('macro.shortcutEmpty') }}</p>
           </div>
         </template>
 
         <!-- Type string editor -->
         <template v-else>
-          <h3 class="text-sm font-medium text-text-light">Type String</h3>
+          <h3 class="text-sm font-medium text-text-light">{{ t('macro.typeString') }}</h3>
           <p class="mt-1 text-xs text-text-muted">
-            The macro will type out this text when triggered.
-            Only characters supported by the selected keyboard layout are allowed.
+            {{ t('macro.typeStringHint') }}
           </p>
 
           <textarea
             :value="selectedMacro.typeString"
             :maxlength="MAX_STRING_CHARACTERS"
-            placeholder="Enter text to type out (e.g. your email address)"
+            :placeholder="t('macro.typeStringPlaceholder')"
             class="mt-4 w-full flex-1 resize-none rounded-lg border border-border bg-surface-raised p-3 text-sm text-text-light placeholder:text-text-muted focus:outline-none focus:ring-1 focus:ring-accent"
             @input="filterTypeString"
           />
 
           <div class="mt-2 text-xs" :class="selectedMacro.typeString.length >= MAX_STRING_CHARACTERS ? 'text-error' : 'text-text-muted'">
-            {{ selectedMacro.typeString.length }} / {{ MAX_STRING_CHARACTERS }} characters
+            {{ selectedMacro.typeString.length }} / {{ MAX_STRING_CHARACTERS }} {{ t('macro.characters') }}
           </div>
         </template>
 

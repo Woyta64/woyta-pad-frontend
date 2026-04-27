@@ -1,0 +1,104 @@
+{
+  "sidebar": {
+    "title": "Woyta Pad Launcher",
+    "connected": "Připojeno",
+    "notConnected": "Nepřipojeno",
+    "disconnect": "Odpojit zařízení",
+    "keymap": "Mapování kláves",
+    "macros": "Makra",
+    "firmwareUpdate": "Aktualizace firmware",
+    "settings": "Nastavení",
+    "helpAndSupport": "Nápověda"
+  },
+  "landing": {
+    "title": "Woyta-Pad Launcher",
+    "subtitle": "Připojte Woyta-Pad a začněte konfigurovat",
+    "webHidUnsupported": "Tento prohlížeč nepodporuje WebHID. Použijte Chrome nebo Edge.",
+    "connectDevice": "Připojit zařízení",
+    "tryWithoutDevice": "Vyzkoušet bez zařízení"
+  },
+  "keymap": {
+    "readingKeymap": "Načítání mapování ze zařízení…",
+    "retry": "Zkusit znovu",
+    "configureDescription": "Nastavte klávesy pro každou vrstvu",
+    "layers": "VRSTVY",
+    "saving": "Ukládání…",
+    "saveChanges": "Uložit změny"
+  },
+  "macro": {
+    "configureDescription": "Spravujte a upravujte makra",
+    "loading": "Načítání…",
+    "loadAll": "Načíst vše",
+    "saving": "Ukládání…",
+    "saveChanges": "Uložit změny",
+    "macroTitle": "Makro",
+    "assignHint": "Vyberte makro a klikněte na klávesu v mapě výše pro přiřazení.",
+    "customTitle": "Vlastní název (nepovinné)",
+    "macroType": "Typ makra",
+    "timedSequence": "Časovaná sekvence",
+    "timedSequenceDescription": "Série stisků a uvolnění kláves s volitelnými prodlevami",
+    "shortcut": "Klávesová zkratka",
+    "shortcutDescription": "Více kláves stisknutých najednou",
+    "typeString": "Psaní textu",
+    "typeStringDescription": "Makro automaticky napíše zadaný text",
+    "sequenceActions": "Akce sekvence",
+    "deselectAll": "Odznačit vše",
+    "selectAll": "Označit vše",
+    "duplicate": "Duplikovat",
+    "delete": "Smazat",
+    "delayRange": "ms · 1 – 60 000",
+    "tap": "Klepnutí",
+    "keyDown": "Stisk klávesy",
+    "keyUp": "Uvolnění klávesy",
+    "delay": "Prodleva",
+    "shortcutKeys": "Klávesy zkratky",
+    "shortcutHint": "Všechny klávesy se stisknou najednou — jako Ctrl+Alt+Del.",
+    "addKey": "Přidat klávesu",
+    "shortcutEmpty": "Přidejte klávesy pro vytvoření zkratky",
+    "typeStringHint": "Při aktivaci makro automaticky napíše tento text. Jsou povoleny pouze znaky, které vaše klávesnicové rozložení podporuje.",
+    "typeStringPlaceholder": "Sem zadejte text (např. e-mailovou adresu)",
+    "characters": "znaků"
+  },
+  "firmware": {
+    "title": "Aktualizace firmware",
+    "currentFirmware": "Aktuální firmware",
+    "keyboard": "Klávesnice",
+    "notConnected": "Nepřipojeno",
+    "version": "Verze",
+    "unknown": "Neznámá",
+    "startingDownload": "Stahování se spouští…",
+    "downloadLatest": "Stáhnout nejnovější firmware",
+    "flashInstructions": "Podržte tlačítko BOOT na zařízení, poté přetáhněte soubor {file} na zobrazený USB disk."
+  },
+  "settings": {
+    "title": "Nastavení",
+    "theme": "Motiv",
+    "light": "Světlý",
+    "dark": "Tmavý",
+    "language": "Jazyk",
+    "keyboardLayout": "Rozložení klávesnice",
+    "keyboardLayoutHint": "Určuje, které znaky lze používat v textových makrech. Vyberte rozložení shodné s nastavením klávesnice v operačním systému.",
+    "deviceLogs": "Záznamy zařízení",
+    "noLogs": "Zatím žádné záznamy."
+  },
+  "help": {
+    "title": "Nápověda",
+    "about": "Woyta Pad je makropad na platformě RP2040. Tento konfigurátor umožňuje přemapovat klávesy, nastavit enkodéry a spravovat vrstvy — vše přes WebHID, bez instalace ovladačů.",
+    "getHelp": "Podpora",
+    "reportBug": "Nahlásit chybu nebo navrhnout funkci",
+    "firmwareSource": "Zdrojový kód firmware"
+  },
+  "palette": {
+    "searchPlaceholder": "Hledat klávesy…",
+    "categories": {
+      "basic": "Základní",
+      "mod": "Modifikátory",
+      "nav": "Navigace",
+      "fn": "Funkční",
+      "numpad": "Numerická klávesnice",
+      "media": "Média",
+      "macro": "Makra",
+      "custom": "Vlastní"
+    }
+  }
+}

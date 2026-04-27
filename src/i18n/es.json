@@ -1,0 +1,104 @@
+{
+  "sidebar": {
+    "title": "Woyta Pad Launcher",
+    "connected": "Conectado",
+    "notConnected": "Sin conexión",
+    "disconnect": "Desconectar",
+    "keymap": "Mapa de teclas",
+    "macros": "Macros",
+    "firmwareUpdate": "Actualizar firmware",
+    "settings": "Configuración",
+    "helpAndSupport": "Ayuda"
+  },
+  "landing": {
+    "title": "Woyta-Pad Launcher",
+    "subtitle": "Conecta tu Woyta-Pad para empezar",
+    "webHidUnsupported": "Este navegador no es compatible con WebHID. Usa Chrome o Edge.",
+    "connectDevice": "Conectar dispositivo",
+    "tryWithoutDevice": "Probar sin dispositivo"
+  },
+  "keymap": {
+    "readingKeymap": "Leyendo el mapa de teclas del dispositivo…",
+    "retry": "Reintentar",
+    "configureDescription": "Asigna teclas a cada capa",
+    "layers": "CAPAS",
+    "saving": "Guardando…",
+    "saveChanges": "Guardar cambios"
+  },
+  "macro": {
+    "configureDescription": "Crea y gestiona tus macros",
+    "loading": "Cargando…",
+    "loadAll": "Cargar todo",
+    "saving": "Guardando…",
+    "saveChanges": "Guardar cambios",
+    "macroTitle": "Macro",
+    "assignHint": "Selecciona un macro y haz clic en una tecla del mapa de arriba para asignarlo.",
+    "customTitle": "Nombre personalizado (opcional)",
+    "macroType": "Tipo de macro",
+    "timedSequence": "Secuencia temporizada",
+    "timedSequenceDescription": "Pulsaciones y sueltas de teclas con pausas opcionales",
+    "shortcut": "Atajo de teclado",
+    "shortcutDescription": "Varias teclas pulsadas a la vez",
+    "typeString": "Texto automático",
+    "typeStringDescription": "Escribe un texto de forma automática",
+    "sequenceActions": "Acciones",
+    "deselectAll": "Deseleccionar todo",
+    "selectAll": "Seleccionar todo",
+    "duplicate": "Duplicar",
+    "delete": "Eliminar",
+    "delayRange": "ms · 1 – 60 000",
+    "tap": "Pulsar y soltar",
+    "keyDown": "Presionar tecla",
+    "keyUp": "Soltar tecla",
+    "delay": "Pausa",
+    "shortcutKeys": "Teclas",
+    "shortcutHint": "Todas las teclas se pulsarán a la vez, como en Ctrl+Alt+Supr.",
+    "addKey": "Añadir tecla",
+    "shortcutEmpty": "Añade teclas para crear un atajo",
+    "typeStringHint": "Al activarse el macro, este texto se escribirá automáticamente. Solo se admiten caracteres del diseño de teclado seleccionado.",
+    "typeStringPlaceholder": "Escribe el texto que quieres que se introduzca (p. ej. tu correo)",
+    "characters": "caracteres"
+  },
+  "firmware": {
+    "title": "Actualizar firmware",
+    "currentFirmware": "Firmware actual",
+    "keyboard": "Teclado",
+    "notConnected": "Sin conexión",
+    "version": "Versión",
+    "unknown": "Desconocida",
+    "startingDownload": "Iniciando descarga…",
+    "downloadLatest": "Descargar último firmware",
+    "flashInstructions": "Mantén pulsado el botón BOOT del dispositivo al conectarlo por USB. Aparecerá como unidad de almacenamiento — arrastra el archivo {file} dentro."
+  },
+  "settings": {
+    "title": "Configuración",
+    "theme": "Apariencia",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "language": "Idioma",
+    "keyboardLayout": "Distribución del teclado",
+    "keyboardLayoutHint": "Determina qué caracteres se pueden usar en macros de texto. Elige la distribución que coincida con la configuración de tu sistema operativo.",
+    "deviceLogs": "Registro del dispositivo",
+    "noLogs": "Aún no hay registros disponibles."
+  },
+  "help": {
+    "title": "Ayuda",
+    "about": "Woyta Pad es un macropad basado en el RP2040. Con este configurador puedes reasignar teclas, programar los encoders y gestionar capas, todo a través de WebHID sin instalar ningún controlador.",
+    "getHelp": "Soporte",
+    "reportBug": "Reportar un error o sugerir una función",
+    "firmwareSource": "Código fuente del firmware"
+  },
+  "palette": {
+    "searchPlaceholder": "Buscar teclas…",
+    "categories": {
+      "basic": "Básicas",
+      "mod": "Modificadores",
+      "nav": "Navegación",
+      "fn": "Función",
+      "numpad": "Teclado numérico",
+      "media": "Multimedia",
+      "macro": "Macros",
+      "custom": "Personalizado"
+    }
+  }
+}

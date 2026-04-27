@@ -19,21 +19,21 @@ function downloadFirmware() {
 
 <template>
   <div class="flex flex-col gap-8 p-8">
-    <h2 class="text-lg font-semibold text-text-heading">Firmware Update</h2>
+    <h2 class="text-lg font-semibold text-text-heading">{{ $t('firmware.title') }}</h2>
 
     <!-- Current firmware info -->
     <section class="flex flex-col gap-3">
       <div class="flex items-center gap-2 text-sm font-medium text-text-light">
         <Info :size="16" />
-        Current Firmware
+        {{ $t('firmware.currentFirmware') }}
       </div>
       <div class="rounded-lg border border-border bg-surface-raised p-4">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm text-text-light">Keyboard</p>
-            <p class="text-xs text-text-muted">{{ keyboardSlug ?? 'Not connected' }}</p>
-            <p class="mt-2 text-sm text-text-light">Version</p>
-            <p class="text-xs text-text-muted">Unknown</p>
+            <p class="text-sm text-text-light">{{ $t('firmware.keyboard') }}</p>
+            <p class="text-xs text-text-muted">{{ keyboardSlug ?? $t('firmware.notConnected') }}</p>
+            <p class="mt-2 text-sm text-text-light">{{ $t('firmware.version') }}</p>
+            <p class="text-xs text-text-muted">{{ $t('firmware.unknown') }}</p>
           </div>
         </div>
       </div>
@@ -48,10 +48,10 @@ function downloadFirmware() {
           @click="downloadFirmware"
       >
         <Download :size="16" />
-        {{ downloading ? 'Starting download…' : 'Download Latest Firmware' }}
+        {{ downloading ? $t('firmware.startingDownload') : $t('firmware.downloadLatest') }}
       </button>
       <p class="text-xs text-text-muted">
-        Flash by holding BOOT button on the device, then drag the <code class="text-text-light">.uf2</code> onto the USB drive that appears.
+        {{ $t('firmware.flashInstructions', { file: '.uf2' }) }}
       </p>
     </section>
   </div>

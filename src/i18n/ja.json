@@ -1,0 +1,104 @@
+{
+  "sidebar": {
+    "title": "Woyta Pad ランチャー",
+    "connected": "接続中",
+    "notConnected": "未接続",
+    "disconnect": "切断する",
+    "keymap": "キーマップ",
+    "macros": "マクロ",
+    "firmwareUpdate": "ファームウェア更新",
+    "settings": "設定",
+    "helpAndSupport": "ヘルプ"
+  },
+  "landing": {
+    "title": "Woyta-Pad ランチャー",
+    "subtitle": "Woyta-Pad を接続してカスタマイズを始めましょう",
+    "webHidUnsupported": "このブラウザは WebHID に対応していません。Chrome または Edge をお使いください。",
+    "connectDevice": "デバイスを接続",
+    "tryWithoutDevice": "デバイスなしで試す"
+  },
+  "keymap": {
+    "readingKeymap": "デバイスからキーマップを読み込んでいます…",
+    "retry": "再試行",
+    "configureDescription": "各レイヤーのキー割り当てを設定",
+    "layers": "レイヤー",
+    "saving": "保存中…",
+    "saveChanges": "変更を保存"
+  },
+  "macro": {
+    "configureDescription": "マクロの作成・編集",
+    "loading": "読み込み中…",
+    "loadAll": "すべて読み込む",
+    "saving": "保存中…",
+    "saveChanges": "変更を保存",
+    "macroTitle": "マクロ",
+    "assignHint": "マクロを選んで、上のキーマップのキーをクリックすると割り当てられます。",
+    "customTitle": "名前（任意）",
+    "macroType": "マクロの種類",
+    "timedSequence": "タイミング付きシーケンス",
+    "timedSequenceDescription": "遅延を挟みながらキーを順番に押す・離す",
+    "shortcut": "ショートカット",
+    "shortcutDescription": "複数のキーを同時押し",
+    "typeString": "テキスト入力",
+    "typeStringDescription": "指定したテキストを自動で入力する",
+    "sequenceActions": "アクション一覧",
+    "deselectAll": "選択解除",
+    "selectAll": "すべて選択",
+    "duplicate": "複製",
+    "delete": "削除",
+    "delayRange": "ms · 1 〜 60,000",
+    "tap": "タップ（押して離す）",
+    "keyDown": "キーを押す",
+    "keyUp": "キーを離す",
+    "delay": "待機",
+    "shortcutKeys": "キーの組み合わせ",
+    "shortcutHint": "Ctrl+Alt+Del のように、設定したキーがすべて同時に押されます。",
+    "addKey": "キーを追加",
+    "shortcutEmpty": "キーを追加してショートカットを作成してください",
+    "typeStringHint": "マクロが発動すると、このテキストが自動で入力されます。使えるのは選択中のキーボードレイアウトで対応している文字のみです。",
+    "typeStringPlaceholder": "入力したいテキストを記入（例：メールアドレス）",
+    "characters": "文字"
+  },
+  "firmware": {
+    "title": "ファームウェア更新",
+    "currentFirmware": "現在のファームウェア",
+    "keyboard": "キーボード",
+    "notConnected": "未接続",
+    "version": "バージョン",
+    "unknown": "不明",
+    "startingDownload": "ダウンロードを開始しています…",
+    "downloadLatest": "最新ファームウェアをダウンロード",
+    "flashInstructions": "デバイスの BOOT ボタンを押しながら USB 接続すると、ドライブとして認識されます。{file} をそこにドラッグしてください。"
+  },
+  "settings": {
+    "title": "設定",
+    "theme": "テーマ",
+    "light": "ライト",
+    "dark": "ダーク",
+    "language": "言語",
+    "keyboardLayout": "キーボードレイアウト",
+    "keyboardLayoutHint": "テキスト入力マクロで使用できる文字に影響します。OS のキーボード設定と一致するレイアウトを選んでください。",
+    "deviceLogs": "デバイスログ",
+    "noLogs": "ログはまだありません。"
+  },
+  "help": {
+    "title": "ヘルプ",
+    "about": "Woyta Pad は RP2040 搭載のマクロパッドです。このコンフィギュレーターでキーの割り当て変更、ロータリーエンコーダーの設定、レイヤー管理ができます。ドライバー不要で WebHID を通じて直接操作できます。",
+    "getHelp": "サポート",
+    "reportBug": "バグを報告・機能リクエスト",
+    "firmwareSource": "ファームウェアのソースコード"
+  },
+  "palette": {
+    "searchPlaceholder": "キーを検索…",
+    "categories": {
+      "basic": "基本",
+      "mod": "修飾キー",
+      "nav": "ナビゲーション",
+      "fn": "ファンクション",
+      "numpad": "テンキー",
+      "media": "メディア",
+      "macro": "マクロ",
+      "custom": "カスタム"
+    }
+  }
+}
