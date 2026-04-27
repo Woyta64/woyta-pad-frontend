@@ -12,8 +12,8 @@ async function connectDevice() {
   try {
     await deviceStore.connect()
     if (deviceStore.isConnected) router.push('/keymap')
-  } catch {
-    // error is hopefully already captured in the store
+  } catch (error) {
+    console.error('[woyta-pad] Connection failed:', error)
   }
 }
 

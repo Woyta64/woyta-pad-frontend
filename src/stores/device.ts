@@ -132,6 +132,7 @@ export const useDeviceStore = defineStore('device', () => {
       // Linux toggle-sync: send a dummy packet so the first real command isn't swallowed
       await sendCommand(CMD_DUMMY)
     } catch (connectionError) {
+      console.error('[woyta-pad] connect() failed:', connectionError)
       error.value = connectionError instanceof Error ? connectionError.message : 'Connection failed'
       throw connectionError
     }
