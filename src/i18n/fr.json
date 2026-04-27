@@ -1,0 +1,104 @@
+{
+  "sidebar": {
+    "title": "Woyta Pad Launcher",
+    "connected": "Connecté",
+    "notConnected": "Non connecté",
+    "disconnect": "Déconnecter",
+    "keymap": "Mappage des touches",
+    "macros": "Macros",
+    "firmwareUpdate": "Mise à jour du firmware",
+    "settings": "Paramètres",
+    "helpAndSupport": "Aide"
+  },
+  "landing": {
+    "title": "Woyta-Pad Launcher",
+    "subtitle": "Connecte ton Woyta-Pad pour commencer",
+    "webHidUnsupported": "Ce navigateur ne prend pas en charge WebHID. Utilise Chrome ou Edge.",
+    "connectDevice": "Connecter l'appareil",
+    "tryWithoutDevice": "Essayer sans appareil"
+  },
+  "keymap": {
+    "readingKeymap": "Lecture du mappage depuis l'appareil…",
+    "retry": "Réessayer",
+    "configureDescription": "Assigne les touches pour chaque couche",
+    "layers": "COUCHES",
+    "saving": "Enregistrement…",
+    "saveChanges": "Enregistrer les modifications"
+  },
+  "macro": {
+    "configureDescription": "Crée et gère tes macros",
+    "loading": "Chargement…",
+    "loadAll": "Tout charger",
+    "saving": "Enregistrement…",
+    "saveChanges": "Enregistrer les modifications",
+    "macroTitle": "Macro",
+    "assignHint": "Sélectionne une macro puis clique sur une touche dans le mappage ci-dessus pour l'assigner.",
+    "customTitle": "Nom personnalisé (optionnel)",
+    "macroType": "Type de macro",
+    "timedSequence": "Séquence temporisée",
+    "timedSequenceDescription": "Appuis et relâchements de touches avec des délais optionnels",
+    "shortcut": "Raccourci clavier",
+    "shortcutDescription": "Plusieurs touches appuyées simultanément",
+    "typeString": "Saisie automatique",
+    "typeStringDescription": "Tape automatiquement un texte",
+    "sequenceActions": "Actions",
+    "deselectAll": "Tout désélectionner",
+    "selectAll": "Tout sélectionner",
+    "duplicate": "Dupliquer",
+    "delete": "Supprimer",
+    "delayRange": "ms · 1 – 60 000",
+    "tap": "Appuyer et relâcher",
+    "keyDown": "Appuyer sur la touche",
+    "keyUp": "Relâcher la touche",
+    "delay": "Pause",
+    "shortcutKeys": "Touches",
+    "shortcutHint": "Toutes les touches sont appuyées en même temps, comme Ctrl+Alt+Suppr.",
+    "addKey": "Ajouter une touche",
+    "shortcutEmpty": "Ajoute des touches pour créer un raccourci",
+    "typeStringHint": "Lorsque la macro est déclenchée, ce texte est saisi automatiquement. Seuls les caractères pris en charge par la disposition du clavier sélectionnée sont autorisés.",
+    "typeStringPlaceholder": "Entre le texte à saisir (ex. ton adresse e-mail)",
+    "characters": "caractères"
+  },
+  "firmware": {
+    "title": "Mise à jour du firmware",
+    "currentFirmware": "Firmware actuel",
+    "keyboard": "Clavier",
+    "notConnected": "Non connecté",
+    "version": "Version",
+    "unknown": "Inconnue",
+    "startingDownload": "Démarrage du téléchargement…",
+    "downloadLatest": "Télécharger le dernier firmware",
+    "flashInstructions": "Maintiens le bouton BOOT de l'appareil enfoncé en le branchant en USB. Il apparaît comme un lecteur — glisse le fichier {file} dedans."
+  },
+  "settings": {
+    "title": "Paramètres",
+    "theme": "Thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "language": "Langue",
+    "keyboardLayout": "Disposition du clavier",
+    "keyboardLayoutHint": "Détermine les caractères utilisables dans les macros de texte. Choisis la disposition correspondant aux paramètres clavier de ton système.",
+    "deviceLogs": "Journal de l'appareil",
+    "noLogs": "Aucun journal disponible pour l'instant."
+  },
+  "help": {
+    "title": "Aide",
+    "about": "Woyta Pad est un macropad basé sur le RP2040. Ce configurateur permet de remapper les touches, de programmer les encodeurs et de gérer les couches — tout via WebHID, sans installer de pilotes.",
+    "getHelp": "Support",
+    "reportBug": "Signaler un bug ou proposer une fonctionnalité",
+    "firmwareSource": "Code source du firmware"
+  },
+  "palette": {
+    "searchPlaceholder": "Rechercher des touches…",
+    "categories": {
+      "basic": "Basique",
+      "mod": "Modificateurs",
+      "nav": "Navigation",
+      "fn": "Fonction",
+      "numpad": "Pavé numérique",
+      "media": "Multimédia",
+      "macro": "Macros",
+      "custom": "Personnalisé"
+    }
+  }
+}

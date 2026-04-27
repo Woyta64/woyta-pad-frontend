@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { Search, X } from 'lucide-vue-next'
-import { KEYCODE_CATEGORIES, type Keycode } from '@/keycodes'
+import { useI18n } from 'vue-i18n'
+import { KEYCODE_CATEGORIES, keycodeLabel, type Keycode } from '@/keycodes'
+
+const { t } = useI18n()
 
 const emit = defineEmits<{
   assign: [keycode: number]
@@ -13,7 +16,9 @@ const search = ref('')
 const visibleCategories = computed(() => {
   if (!search.value) return KEYCODE_CATEGORIES
   const q = search.value.toLowerCase()
-  return KEYCODE_CATEGORIES.filter((c) => c.keys.some((k) => k.label.toLowerCase().includes(q)))
+  return KEYCODE_CATEGORIES.filter((c) =>
+    c.keys.some((k) => keycodeLabel(k.code).toLowerCase().includes(q)),
+  )
 })
 
 // When a search query hides the currently active tab (no keys match),
@@ -29,7 +34,7 @@ const activeKeys = computed((): Keycode[] => {
   if (!category) return []
   if (!search.value) return category.keys
   const q = search.value.toLowerCase()
-  return category.keys.filter((k) => k.label.toLowerCase().includes(q))
+  return category.keys.filter((k) => keycodeLabel(k.code).toLowerCase().includes(q))
 })
 </script>
 
@@ -49,7 +54,7 @@ const activeKeys = computed((): Keycode[] => {
           "
           @click="activeCategory = cat.id"
         >
-          {{ cat.label }}
+          {{ t(`palette.categories.${cat.id}`) }}
         </button>
       </div>
 
@@ -58,7 +63,7 @@ const activeKeys = computed((): Keycode[] => {
         <input
           v-model="search"
           type="text"
-          placeholder="Search any codes..."
+          :placeholder="$t('palette.searchPlaceholder')"
           class="bg-transparent text-sm text-text-light placeholder:text-text-muted outline-none"
         />
         <button v-if="search" class="text-text-muted hover:text-text-light" @click="search = ''">
@@ -68,7 +73,7 @@ const activeKeys = computed((): Keycode[] => {
     </div>
 
     <!-- Keys grid -->
-    <div class="grid min-h-0 flex-1 content-start gap-2 overflow-y-auto" style="grid-template-columns: repeat(auto-fill, 3.5rem)">
+    <div class="scrollbar-thin grid min-h-0 flex-1 content-start gap-2 overflow-y-auto" style="grid-template-columns: repeat(auto-fill, 3.5rem)">
       <button
         v-for="kc in activeKeys"
         :key="kc.code"
@@ -76,7 +81,7 @@ const activeKeys = computed((): Keycode[] => {
         :title="`0x${kc.code.toString(16).padStart(2, '0').toUpperCase()}`"
         @click="emit('assign', kc.code)"
       >
-        {{ kc.label }}
+        {{ keycodeLabel(kc.code) }}
       </button>
     </div>
   </div>

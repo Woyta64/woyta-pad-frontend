@@ -5,9 +5,9 @@
   --app-surface: #0c0d12;
   --app-surface-raised: #121418;
   --app-border: #202127;
-  --app-text: #6f7178;
-  --app-text-muted: #53555b;
-  --app-text-light: #abaeb4;
+  --app-text: #8b8d95;
+  --app-text-muted: #6f7178;
+  --app-text-light: #c2c4ca;
   --app-text-heading: #ffffff;
   --app-accent: #00c0c2;
   --app-accent-hover: #00d4d5;
@@ -17,6 +17,43 @@
   --app-warning: #e1a200;
   --app-warning-hover: #f0b31a;
   --app-warning-muted: #604200;
+}
+
+html.light {
+  --app-bg: #f4f5f7;
+  --app-surface: #ffffff;
+  --app-surface-raised: #edeef1;
+  --app-border: #d8dae0;
+  --app-text: #555860;
+  --app-text-muted: #7d808a;
+  --app-text-light: #2a2c32;
+  --app-text-heading: #111318;
+  --app-accent: #009799;
+  --app-accent-hover: #007f81;
+  --app-error: #dc2b31;
+  --app-error-hover: #c42328;
+  --app-error-muted: #fde8e9;
+  --app-warning: #b58600;
+  --app-warning-hover: #9e7400;
+  --app-warning-muted: #fef4d9;
+}
+
+.no-spinners::-webkit-outer-spin-button,
+.no-spinners::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.no-spinners {
+  -moz-appearance: textfield;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--app-border) transparent;
+}
+
+.scrollbar-thin:hover {
+  scrollbar-color: var(--app-text-muted) transparent;
 }
 
 @theme inline {

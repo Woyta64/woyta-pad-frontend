@@ -15,6 +15,9 @@ const CMD_GET_METADATA = 0x01
 const CMD_GET_LAYOUT = 0x02
 const CMD_GET_KEYMAP = 0x03
 const CMD_SET_KEY = 0x04
+const CMD_GET_MACRO = 0x05
+const CMD_SET_MACRO = 0x06
+const CMD_CLEAR_MACRO = 0x07
 const CMD_BURST_START = 0x12
 const CMD_BURST_END = 0x22
 
@@ -22,6 +25,9 @@ const CMD_BURST_END = 0x22
 const ENCODER_ROW_MARKER = 0xff
 
 const LAYOUT_ITEM_SIZE = 5 // [type, x, y, matrixRow, matrixCol]
+
+const MACRO_SLOT_SIZE = 256
+const MACRO_SET_DATA_PER_PACKET = 28 // Bytes 4-31 of each set-macro packet
 
 const RESPONSE_TIMEOUT_MS = 5000
 
@@ -32,6 +38,7 @@ export interface DeviceMetadata {
   cols: number
   layers: number
   encoders: number
+  id: string
 }
 
 export interface LayoutItem {
@@ -125,6 +132,7 @@ export const useDeviceStore = defineStore('device', () => {
       // Linux toggle-sync: send a dummy packet so the first real command isn't swallowed
       await sendCommand(CMD_DUMMY)
     } catch (connectionError) {
+      console.error('[woyta-pad] connect() failed:', connectionError)
       error.value = connectionError instanceof Error ? connectionError.message : 'Connection failed'
       throw connectionError
     }
@@ -240,14 +248,20 @@ export const useDeviceStore = defineStore('device', () => {
   // --- Protocol commands ---
 
   // 0x01 - Metadata (single-packet response)
-  // Response: [0x01, rows, cols, layers, encoders]
+  // Response: [0x01, rows, cols, layers, encoders, id_len, id_bytes...]
   async function requestMetadata(): Promise<DeviceMetadata> {
     const response = await sendRequest(CMD_GET_METADATA)
+    const idLength = response.getUint8(5)
+    const idBytes = new Uint8Array(idLength)
+    for (let i = 0; i < idLength; i++) {
+      idBytes[i] = response.getUint8(6 + i)
+    }
     const result: DeviceMetadata = {
       rows: response.getUint8(1),
       cols: response.getUint8(2),
       layers: response.getUint8(3),
       encoders: response.getUint8(4),
+      id: new TextDecoder().decode(idBytes),
     }
     metadata.value = result
     return result
@@ -323,11 +337,50 @@ export const useDeviceStore = defineStore('device', () => {
     await sendCommand(CMD_SET_KEY, [layer, ENCODER_ROW_MARKER, colByte, keycode & 0xff, (keycode >> 8) & 0xff])
   }
 
+  // 0x05 - Get Macro (burst response)
+  // Reassembles 256-byte macro slot from 9 burst chunks (9 × 30 = 270 bytes, truncated to 256)
+  async function requestMacro(slotIndex: number): Promise<Uint8Array> {
+    const { payload } = await sendBurstRequest(CMD_GET_MACRO, [slotIndex])
+    return payload.slice(0, MACRO_SLOT_SIZE)
+  }
+
+  // 0x06 - Set Macro (multi-packet write)
+  // Start:    [0x06, slot, actionCount, 0x00, ...28 data bytes]
+  // Continue: [0x06, slot, 0xFF, offset, ...28 data bytes]
+  async function setMacro(slotIndex: number, actionCount: number, actionData: Uint8Array) {
+    const totalDataSize = actionCount * 3 + 1 // actions + MACRO_END terminator
+
+    // Start packet
+    const startPayload: number[] = [slotIndex, actionCount, 0x00]
+    for (let i = 0; i < Math.min(totalDataSize, MACRO_SET_DATA_PER_PACKET); i++) {
+      startPayload.push(actionData[i])
+    }
+    await sendCommand(CMD_SET_MACRO, startPayload)
+
+    // Continue packets for remaining data
+    let dataOffset = MACRO_SET_DATA_PER_PACKET
+    while (dataOffset < totalDataSize) {
+      const continuePayload: number[] = [slotIndex, 0xff, dataOffset]
+      const chunkSize = Math.min(totalDataSize - dataOffset, MACRO_SET_DATA_PER_PACKET)
+      for (let i = 0; i < chunkSize; i++) {
+        continuePayload.push(actionData[dataOffset + i])
+      }
+      await sendCommand(CMD_SET_MACRO, continuePayload)
+      dataOffset += MACRO_SET_DATA_PER_PACKET
+    }
+  }
+
+  // 0x07 - Clear Macro (fire-and-forget, debounced flash save on device)
+  async function clearMacro(slotIndex: number) {
+    await sendCommand(CMD_CLEAR_MACRO, [slotIndex])
+  }
+
   return {
     device, demoMode, error, metadata,
     isConnected, productName,
     connect, disconnect, enterDemoMode,
     requestMetadata, requestLayout, requestKeymap,
     setMatrixKey, setEncoderKey,
+    requestMacro, setMacro, clearMacro,
   }
 })

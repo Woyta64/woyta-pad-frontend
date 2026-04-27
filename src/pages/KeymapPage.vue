@@ -306,7 +306,7 @@ onUnmounted(() => resizeObserver?.disconnect())
     <!-- Loading state -->
     <div v-if="loading" class="flex flex-1 flex-col items-center justify-center gap-3">
       <Loader2 :size="32" class="animate-spin text-accent" />
-      <p class="text-sm text-text-muted">Reading keymap from device...</p>
+      <p class="text-sm text-text-muted">{{ $t('keymap.readingKeymap') }}</p>
     </div>
 
     <!-- Error state -->
@@ -316,7 +316,7 @@ onUnmounted(() => resizeObserver?.disconnect())
         class="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-bg transition-colors hover:bg-accent-hover"
         @click="fetchFromDevice"
       >
-        Retry
+        {{ $t('keymap.retry') }}
       </button>
     </div>
 
@@ -324,11 +324,11 @@ onUnmounted(() => resizeObserver?.disconnect())
     <template v-else>
       <!-- Header -->
       <header class="flex items-center justify-between border-b border-border px-6 py-4">
-        <p class="text-sm text-text-muted">Configure Woyta Pad layer configuration</p>
+        <p class="text-sm text-text-muted">{{ $t('keymap.configureDescription') }}</p>
 
         <div class="flex items-center gap-4">
           <div class="flex items-center gap-2">
-            <span class="text-sm text-text-muted">LAYERS</span>
+            <span class="text-sm text-text-muted">{{ $t('keymap.layers') }}</span>
             <div class="flex gap-1">
               <button
                 v-for="layer in layers"
@@ -353,7 +353,7 @@ onUnmounted(() => resizeObserver?.disconnect())
           >
             <Loader2 v-if="saving" :size="16" class="animate-spin" />
             <Save v-else :size="16" />
-            {{ saving ? 'Saving...' : 'Save Changes' }}
+            {{ saving ? $t('keymap.saving') : $t('keymap.saveChanges') }}
           </button>
         </div>
       </header>

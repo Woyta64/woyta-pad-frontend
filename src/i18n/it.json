@@ -1,0 +1,104 @@
+{
+  "sidebar": {
+    "title": "Woyta Pad Launcher",
+    "connected": "Connesso",
+    "notConnected": "Non connesso",
+    "disconnect": "Disconnetti",
+    "keymap": "Mappa tasti",
+    "macros": "Macro",
+    "firmwareUpdate": "Aggiorna firmware",
+    "settings": "Impostazioni",
+    "helpAndSupport": "Guida"
+  },
+  "landing": {
+    "title": "Woyta-Pad Launcher",
+    "subtitle": "Collega il tuo Woyta-Pad per iniziare",
+    "webHidUnsupported": "Questo browser non supporta WebHID. Usa Chrome o Edge.",
+    "connectDevice": "Collega dispositivo",
+    "tryWithoutDevice": "Prova senza dispositivo"
+  },
+  "keymap": {
+    "readingKeymap": "Lettura della mappa tasti dal dispositivo…",
+    "retry": "Riprova",
+    "configureDescription": "Assegna i tasti per ogni livello",
+    "layers": "LIVELLI",
+    "saving": "Salvataggio…",
+    "saveChanges": "Salva modifiche"
+  },
+  "macro": {
+    "configureDescription": "Crea e gestisci le tue macro",
+    "loading": "Caricamento…",
+    "loadAll": "Carica tutto",
+    "saving": "Salvataggio…",
+    "saveChanges": "Salva modifiche",
+    "macroTitle": "Macro",
+    "assignHint": "Seleziona una macro e clicca un tasto nella mappa sopra per assegnarla.",
+    "customTitle": "Nome personalizzato (opzionale)",
+    "macroType": "Tipo di macro",
+    "timedSequence": "Sequenza temporizzata",
+    "timedSequenceDescription": "Pressioni e rilasci di tasti con pause opzionali",
+    "shortcut": "Scorciatoia",
+    "shortcutDescription": "Più tasti premuti contemporaneamente",
+    "typeString": "Testo automatico",
+    "typeStringDescription": "Digita automaticamente un testo",
+    "sequenceActions": "Azioni",
+    "deselectAll": "Deseleziona tutto",
+    "selectAll": "Seleziona tutto",
+    "duplicate": "Duplica",
+    "delete": "Elimina",
+    "delayRange": "ms · 1 – 60 000",
+    "tap": "Premi e rilascia",
+    "keyDown": "Premi tasto",
+    "keyUp": "Rilascia tasto",
+    "delay": "Pausa",
+    "shortcutKeys": "Tasti",
+    "shortcutHint": "Tutti i tasti vengono premuti contemporaneamente, come Ctrl+Alt+Canc.",
+    "addKey": "Aggiungi tasto",
+    "shortcutEmpty": "Aggiungi tasti per creare una scorciatoia",
+    "typeStringHint": "Quando la macro viene attivata, digita automaticamente questo testo. Sono ammessi solo i caratteri supportati dal layout tastiera selezionato.",
+    "typeStringPlaceholder": "Inserisci il testo da digitare (es. il tuo indirizzo email)",
+    "characters": "caratteri"
+  },
+  "firmware": {
+    "title": "Aggiornamento firmware",
+    "currentFirmware": "Firmware attuale",
+    "keyboard": "Tastiera",
+    "notConnected": "Non connesso",
+    "version": "Versione",
+    "unknown": "Sconosciuta",
+    "startingDownload": "Avvio del download…",
+    "downloadLatest": "Scarica l'ultimo firmware",
+    "flashInstructions": "Tieni premuto il tasto BOOT sul dispositivo e collegalo via USB. Apparirà come unità di archiviazione — trascina il file {file} al suo interno."
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "theme": "Tema",
+    "light": "Chiaro",
+    "dark": "Scuro",
+    "language": "Lingua",
+    "keyboardLayout": "Layout tastiera",
+    "keyboardLayoutHint": "Determina quali caratteri possono essere usati nelle macro di testo. Scegli il layout corrispondente alle impostazioni del sistema operativo.",
+    "deviceLogs": "Log dispositivo",
+    "noLogs": "Nessun log disponibile."
+  },
+  "help": {
+    "title": "Guida",
+    "about": "Woyta Pad è un macropad basato su RP2040. Con questo configuratore puoi rimappare i tasti, programmare gli encoder e gestire i livelli — tutto via WebHID, senza installare driver.",
+    "getHelp": "Supporto",
+    "reportBug": "Segnala un bug o suggerisci una funzione",
+    "firmwareSource": "Codice sorgente del firmware"
+  },
+  "palette": {
+    "searchPlaceholder": "Cerca tasti…",
+    "categories": {
+      "basic": "Base",
+      "mod": "Modificatori",
+      "nav": "Navigazione",
+      "fn": "Funzione",
+      "numpad": "Tastierino numerico",
+      "media": "Multimediale",
+      "macro": "Macro",
+      "custom": "Personalizzato"
+    }
+  }
+}
