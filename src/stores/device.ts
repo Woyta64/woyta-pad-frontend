@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { shallowRef, ref, computed } from 'vue'
 
 // USB identifiers matching the Woyta Pad firmware descriptor
-const VENDOR_ID = 0xcafe
-const PRODUCT_ID = 0x4243
+const VENDOR_ID = 0x1209
+const PRODUCT_ID = 0x5750
 const USAGE_PAGE_VENDOR = 0xff60 // Targets Interface 1 (config channel), not Interface 0 (keyboard)
 const PACKET_SIZE = 32           // Fixed packet size - matches firmware report descriptor
 const CHUNK_PAYLOAD_OFFSET = 2   // Data packets carry payload starting at byte 2
