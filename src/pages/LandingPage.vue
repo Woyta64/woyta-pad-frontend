@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { Keyboard } from 'lucide-vue-next'
+import { ref, computed } from 'vue'
+import { Keyboard, Copy, Check } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import { useDeviceStore } from '@/stores/device'
 
@@ -10,9 +10,21 @@ const deviceStore = useDeviceStore()
 const hidSupported = 'hid' in navigator
 const isLinux = navigator.userAgent.includes('Linux') && !navigator.userAgent.includes('Android')
 
-const showLinuxHint = computed(() =>
-  isLinux && !!deviceStore.error && /NotAllowedError|failed to open/i.test(deviceStore.error)
+const showLinuxHint = computed(
+  () => isLinux && !!deviceStore.error && /NotAllowedError|failed to open/i.test(deviceStore.error ?? '')
 )
+
+const UDEV_FILE_PATH = '/etc/udev/rules.d/99-woyta-pad.rules'
+const UDEV_RULE = '# Woyta-Pad WebHID Access\nKERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="5750", MODE="0666"'
+const UDEV_RELOAD_CMD = 'sudo udevadm control --reload-rules && sudo udevadm trigger'
+
+const copiedKey = ref<string | null>(null)
+
+async function copyText(text: string, key: string) {
+  await navigator.clipboard.writeText(text)
+  copiedKey.value = key
+  setTimeout(() => { copiedKey.value = null }, 1500)
+}
 
 async function connectDevice() {
   try {
@@ -45,11 +57,39 @@ function tryWithoutDevice() {
         {{ deviceStore.error }}
       </p>
 
-      <div v-if="showLinuxHint" class="max-w-sm rounded-lg border border-border bg-surface-raised p-4 text-left">
-        <p class="text-xs text-text-light leading-relaxed">{{ $t('landing.linuxPermissionHint') }}</p>
-        <pre class="mt-2 rounded bg-surface p-2 text-xs text-text-light"># Woyta-Pad WebHID Access
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="cafe", ATTRS{idProduct}=="4243", MODE="0666"</pre>
-        <p class="mt-2 text-xs text-text-muted">{{ $t('landing.linuxUdevReload') }}</p>
+      <div v-if="showLinuxHint" class="w-160 rounded-lg border border-border bg-surface-raised p-5 text-left">
+        <p class="text-sm text-text-light leading-relaxed">{{ $t('landing.linuxPermissionHint') }}</p>
+        <div class="relative mt-3">
+          <pre class="overflow-x-auto rounded bg-surface px-4 py-3 pr-12 text-sm text-text-light">{{ UDEV_FILE_PATH }}</pre>
+          <button
+            class="absolute right-2 top-2 rounded p-1.5 text-text-muted transition-colors hover:bg-border hover:text-text-light"
+            @click="copyText(UDEV_FILE_PATH, 'path')"
+          >
+            <Check v-if="copiedKey === 'path'" :size="14" />
+            <Copy v-else :size="14" />
+          </button>
+        </div>
+        <div class="relative mt-1">
+          <pre class="overflow-x-auto rounded bg-surface px-4 py-3 pr-12 text-sm text-text-light">{{ UDEV_RULE }}</pre>
+          <button
+            class="absolute right-2 top-2 rounded p-1.5 text-text-muted transition-colors hover:bg-border hover:text-text-light"
+            @click="copyText(UDEV_RULE, 'rule')"
+          >
+            <Check v-if="copiedKey === 'rule'" :size="14" />
+            <Copy v-else :size="14" />
+          </button>
+        </div>
+        <p class="mt-4 text-sm text-text-muted">{{ $t('landing.linuxUdevReload') }}</p>
+        <div class="relative mt-1">
+          <pre class="overflow-x-auto rounded bg-surface px-4 py-3 pr-12 text-sm text-text-light">{{ UDEV_RELOAD_CMD }}</pre>
+          <button
+            class="absolute right-2 top-2 rounded p-1.5 text-text-muted transition-colors hover:bg-border hover:text-text-light"
+            @click="copyText(UDEV_RELOAD_CMD, 'reload')"
+          >
+            <Check v-if="copiedKey === 'reload'" :size="14" />
+            <Copy v-else :size="14" />
+          </button>
+        </div>
       </div>
 
       <button

@@ -16,8 +16,8 @@
     "webHidUnsupported": "WebHID is not supported in this browser. Use Chrome or Edge.",
     "connectDevice": "Connect Device",
     "tryWithoutDevice": "Try without device",
-    "linuxPermissionHint": "On Linux, WebHID requires a udev rule to access the device. Create the file /etc/udev/rules.d/99-woyta-pad.rules with the following content, then re-plug the device:",
-    "linuxUdevReload": "Then reload udev: sudo udevadm control --reload-rules && sudo udevadm trigger"
+    "linuxPermissionHint": "On Linux, WebHID requires a udev rule to access the device. Create the file below with the following content, then re-plug the device:",
+    "linuxUdevReload": "Then reload udev:"
   },
   "keymap": {
     "readingKeymap": "Reading keymap from device...",
