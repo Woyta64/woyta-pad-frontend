@@ -16,8 +16,8 @@
     "webHidUnsupported": "Tento prohlížeč nepodporuje WebHID. Použijte Chrome nebo Edge.",
     "connectDevice": "Připojit zařízení",
     "tryWithoutDevice": "Vyzkoušet bez zařízení",
-    "linuxPermissionHint": "Na Linuxu je pro přístup k zařízení přes WebHID potřeba pravidlo udev. Vytvořte soubor /etc/udev/rules.d/99-woyta-pad.rules s tímto obsahem a znovu připojte zařízení:",
-    "linuxUdevReload": "Poté znovu načtěte udev: sudo udevadm control --reload-rules && sudo udevadm trigger"
+    "linuxPermissionHint": "Na Linuxu je pro přístup k zařízení přes WebHID potřeba pravidlo udev. Vytvořte níže uvedený soubor s tímto obsahem a znovu připojte zařízení:",
+    "linuxUdevReload": "Poté znovu načtěte udev:"
   },
   "keymap": {
     "readingKeymap": "Načítání mapování ze zařízení…",
